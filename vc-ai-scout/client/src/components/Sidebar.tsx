@@ -38,7 +38,7 @@ const Sidebar = () => {
             <div className="p-6">
                 <div className="flex flex-col">
                     <h1 className="text-xl font-bold tracking-tight text-gray-900">ThesisScout</h1>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mt-1">AI VC Intelligence</span>
+                    <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mt-1">AI VC Intelligence</span>
                 </div>
             </div>
 
@@ -49,7 +49,7 @@ const Sidebar = () => {
                         <Link
                             key={item.name}
                             to={item.href}
-                            className={`flex items-center px-4 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${isActive
+                            className={`flex items-center px-4 py-2.5 text-base font-medium rounded-xl transition-all duration-200 ${isActive
                                 ? 'bg-blue-50 text-blue-600 shadow-sm'
                                 : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                 }`}
@@ -68,7 +68,7 @@ const Sidebar = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900 truncate">Priya Uttam</p>
-                        <p className="text-[11px] text-gray-500 font-medium">Pro Account</p>
+                        <p className="text-xs text-gray-500 font-medium">Pro Account</p>
                     </div>
                 </div>
             </div>

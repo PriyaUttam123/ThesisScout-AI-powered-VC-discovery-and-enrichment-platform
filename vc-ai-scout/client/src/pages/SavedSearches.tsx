@@ -45,7 +45,7 @@ const SavedSearches = () => {
         <div className="space-y-10 pb-20">
             <div>
                 <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Saved Views</h2>
-                <p className="text-sm text-gray-500 mt-1 font-medium">Instantly return to your most effective discovery filter combinations.</p>
+                <p className="text-base text-gray-500 mt-1 font-medium">Instantly return to your most effective discovery filter combinations.</p>
             </div>
 
             {savedSearches.length === 0 ? (
@@ -56,7 +56,7 @@ const SavedSearches = () => {
                         </svg>
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">No saved views yet</h3>
-                    <p className="mt-2 text-sm text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Filter startups on the Discovery page and click "Save View" to populate this gallery.</p>
+                    <p className="mt-2 text-base text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Filter startups on the Discovery page and click "Save View" to populate this gallery.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -69,7 +69,7 @@ const SavedSearches = () => {
                             <div className="flex justify-between items-start mb-6">
                                 <div className="space-y-1">
                                     <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{search.name}</h3>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">
                                         Created {new Date(search.timestamp).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -84,8 +84,8 @@ const SavedSearches = () => {
                             </div>
 
                             <div className="space-y-3 mb-8 flex-1">
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 opacity-60">Visual Parameters</p>
-                                <div className="flex flex-wrap gap-2 text-xs font-bold">
+                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 opacity-60">Visual Parameters</p>
+                                <div className="flex flex-wrap gap-2 text-sm font-bold">
                                     {search.filters.searchTerm ? (
                                         <span className="bg-gray-50 text-gray-600 px-2.5 py-1 rounded-lg border border-gray-100">"{search.filters.searchTerm}"</span>
                                     ) : (
@@ -100,7 +100,7 @@ const SavedSearches = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-auto group-hover:translate-x-1 transition-transform inline-flex items-center text-blue-600 text-sm font-bold tracking-tight">
+                            <div className="mt-auto group-hover:translate-x-1 transition-transform inline-flex items-center text-blue-600 text-base font-bold tracking-tight">
                                 Launch Discovery View
                                 <svg className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />

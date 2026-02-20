@@ -12,19 +12,19 @@ const Header = () => {
                         <input
                             type="text"
                             placeholder="Search everything..."
-                            className="block w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent rounded-xl text-sm font-medium placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none border border-transparent"
+                            className="block w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent rounded-xl text-base font-medium placeholder-gray-400 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none border border-transparent"
                         />
                     </div>
                 </div>
                 <div className="flex items-center space-x-6">
                     <div className="flex items-center space-x-1">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Network Live</span>
+                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Network Live</span>
                     </div>
-                    <button className="text-xs font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-widest">
+                    <button className="text-sm font-bold text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-widest">
                         Support
                     </button>
-                    <button className="bg-blue-600 text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95 uppercase tracking-widest">
+                    <button className="bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95 uppercase tracking-widest">
                         New Entity
                     </button>
                 </div>

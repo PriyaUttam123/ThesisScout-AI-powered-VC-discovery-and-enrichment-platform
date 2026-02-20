@@ -100,11 +100,11 @@ const Lists = () => {
             <div className="flex items-end justify-between">
                 <div>
                     <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Portfolios</h2>
-                    <p className="text-sm text-gray-500 mt-1 font-medium">Organize and manage your targets into thematic collections.</p>
+                    <p className="text-base text-gray-500 mt-1 font-medium">Organize and manage your targets into thematic collections.</p>
                 </div>
                 <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
+                    className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-base font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
                 >
                     New Collection
                 </button>
@@ -134,7 +134,7 @@ const Lists = () => {
                             <div className="flex justify-between items-start mb-6">
                                 <div className="space-y-1">
                                     <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">{list.name}</h3>
-                                    <div className="flex items-center text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                    <div className="flex items-center text-sm font-bold text-gray-400 uppercase tracking-widest leading-none">
                                         <span className="tabular-nums">{list.companyIds.length}</span>
                                         <span className="ml-1.5 opacity-60">TARGETS</span>
                                     </div>
@@ -152,13 +152,13 @@ const Lists = () => {
                             <div className="flex gap-3 pt-6 border-t border-gray-50">
                                 <button
                                     onClick={(e) => { e.stopPropagation(); exportAsCSV(list); }}
-                                    className="flex-1 text-[11px] font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
+                                    className="flex-1 text-xs font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
                                 >
                                     CSV
                                 </button>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); exportAsJSON(list); }}
-                                    className="flex-1 text-[11px] font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
+                                    className="flex-1 text-xs font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
                                 >
                                     JSON
                                 </button>
@@ -187,10 +187,10 @@ const Lists = () => {
                         <table className="min-w-full divide-y divide-gray-50">
                             <thead className="bg-white">
                                 <tr>
-                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Name</th>
-                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Industry</th>
-                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Location</th>
-                                    <th className="px-8 py-4 text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest">Action</th>
+                                    <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Name</th>
+                                    <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Industry</th>
+                                    <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-widest">Location</th>
+                                    <th className="px-8 py-4 text-right text-xs font-bold text-gray-400 uppercase tracking-widest">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-50">
@@ -207,14 +207,14 @@ const Lists = () => {
                                         return (
                                             <tr key={id} className="hover:bg-blue-50/20 transition-colors group">
                                                 <td className="px-8 py-5 whitespace-nowrap">
-                                                    <span className="text-sm font-semibold text-gray-900">{company.name}</span>
+                                                    <span className="text-base font-semibold text-gray-900">{company.name}</span>
                                                 </td>
                                                 <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">{company.industry}</td>
                                                 <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-500">{company.location}</td>
                                                 <td className="px-8 py-5 whitespace-nowrap text-right">
                                                     <button
                                                         onClick={() => removeCompanyFromList(selectedList.id, id)}
-                                                        className="text-[11px] font-bold text-gray-300 hover:text-red-500 uppercase tracking-widest transition-colors"
+                                                        className="text-xs font-bold text-gray-300 hover:text-red-500 uppercase tracking-widest transition-colors"
                                                     >
                                                         Remove
                                                     </button>
@@ -246,7 +246,7 @@ const Lists = () => {
                                         type="text"
                                         id="list-name"
                                         autoFocus
-                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-base focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
                                         placeholder="e.g. Fintech Series A targets"
                                         value={newListName}
                                         onChange={(e) => setNewListName(e.target.value)}

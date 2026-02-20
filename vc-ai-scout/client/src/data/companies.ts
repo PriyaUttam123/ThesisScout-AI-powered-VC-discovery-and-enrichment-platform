@@ -4,10 +4,11 @@ export interface Company {
     website: string;
     description: string;
     industry: string;
-    stage: 'Pre-seed' | 'Seed' | 'Series A' | 'Series B' | 'Series C' | 'Established';
+    stage: string;
     location: string;
     foundedYear: number;
     tags: string[];
+    logo?: string;
 }
 
 export const companies: Company[] = [
