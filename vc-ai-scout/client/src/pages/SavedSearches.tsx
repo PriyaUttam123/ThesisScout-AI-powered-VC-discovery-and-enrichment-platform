@@ -23,8 +23,9 @@ const SavedSearches = () => {
         }
     }, []);
 
-    const handleDelete = (id: string) => {
-        if (window.confirm('Delete this saved search?')) {
+    const handleDelete = (id: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (window.confirm('Delete this saved view?')) {
             const updated = savedSearches.filter(s => s.id !== id);
             setSavedSearches(updated);
             localStorage.setItem('vc_scout_saved_searches', JSON.stringify(updated));
@@ -41,29 +42,40 @@ const SavedSearches = () => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-10 pb-20">
             <div>
-                <h1 className="text-2xl font-bold text-gray-900">Saved Searches</h1>
-                <p className="text-sm text-gray-500 mt-1">Re-run your favorite discovery filters with one click.</p>
+                <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Saved Views</h2>
+                <p className="text-sm text-gray-500 mt-1 font-medium">Instantly return to your most effective discovery filter combinations.</p>
             </div>
 
             {savedSearches.length === 0 ? (
-                <div className="bg-white border-2 border-dashed border-gray-200 rounded-lg py-12 text-center">
-                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">No saved searches</h3>
-                    <p className="mt-1 text-sm text-gray-500">Go to the Companies page and click "Save Current View" to get started.</p>
+                <div className="bg-white border border-gray-100 rounded-2xl py-24 text-center shadow-sm">
+                    <div className="w-16 h-16 bg-gray-50 rounded-2xl mx-auto flex items-center justify-center mb-6">
+                        <svg className="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                        </svg>
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">No saved views yet</h3>
+                    <p className="mt-2 text-sm text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Filter startups on the Discovery page and click "Save View" to populate this gallery.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {savedSearches.map(search => (
-                        <div key={search.id} className="bg-white shadow rounded-lg p-6 border border-gray-100 hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-lg font-bold text-gray-900">{search.name}</h3>
+                        <div
+                            key={search.id}
+                            onClick={() => handleRun(search)}
+                            className="group bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-xl hover:shadow-blue-50/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                        >
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="space-y-1">
+                                    <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{search.name}</h3>
+                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                        Created {new Date(search.timestamp).toLocaleDateString()}
+                                    </p>
+                                </div>
                                 <button
-                                    onClick={() => handleDelete(search.id)}
-                                    className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                                    onClick={(e) => handleDelete(search.id, e)}
+                                    className="p-2 text-gray-200 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -71,31 +83,29 @@ const SavedSearches = () => {
                                 </button>
                             </div>
 
-                            <div className="space-y-2 mb-6">
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-gray-400">Search:</span>
-                                    <span className="text-gray-700 font-medium">{search.filters.searchTerm || 'None'}</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-gray-400">Industry:</span>
-                                    <span className="text-gray-700 font-medium">{search.filters.industryFilter || 'All'}</span>
-                                </div>
-                                <div className="flex justify-between text-xs">
-                                    <span className="text-gray-400">Stage:</span>
-                                    <span className="text-gray-700 font-medium">{search.filters.stageFilter || 'All'}</span>
+                            <div className="space-y-3 mb-8 flex-1">
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 opacity-60">Visual Parameters</p>
+                                <div className="flex flex-wrap gap-2 text-xs font-bold">
+                                    {search.filters.searchTerm ? (
+                                        <span className="bg-gray-50 text-gray-600 px-2.5 py-1 rounded-lg border border-gray-100">"{search.filters.searchTerm}"</span>
+                                    ) : (
+                                        <span className="bg-gray-50 text-gray-300 px-2.5 py-1 rounded-lg border border-gray-100 italic">No Keyword</span>
+                                    )}
+                                    {search.filters.industryFilter && (
+                                        <span className="bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg border border-blue-100">{search.filters.industryFilter}</span>
+                                    )}
+                                    {search.filters.stageFilter && (
+                                        <span className="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg border border-indigo-100">{search.filters.stageFilter}</span>
+                                    )}
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => handleRun(search)}
-                                className="w-full text-sm font-semibold py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors shadow-sm flex items-center justify-center"
-                            >
-                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <div className="mt-auto group-hover:translate-x-1 transition-transform inline-flex items-center text-blue-600 text-sm font-bold tracking-tight">
+                                Launch Discovery View
+                                <svg className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
-                                Run Search
-                            </button>
+                            </div>
                         </div>
                     ))}
                 </div>

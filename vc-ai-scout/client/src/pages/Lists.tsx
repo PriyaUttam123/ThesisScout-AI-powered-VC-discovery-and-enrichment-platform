@@ -42,7 +42,7 @@ const Lists = () => {
 
     const handleDeleteList = (id: string, e: React.MouseEvent) => {
         e.stopPropagation();
-        if (window.confirm('Are you sure you want to delete this list?')) {
+        if (window.confirm('Delete this collection? This action cannot be undone.')) {
             const updatedLists = lists.filter(l => l.id !== id);
             saveLists(updatedLists);
             if (selectedListId === id) setSelectedListId(null);
@@ -96,45 +96,52 @@ const Lists = () => {
     const selectedList = lists.find(l => l.id === selectedListId);
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
+        <div className="space-y-10 pb-20">
+            <div className="flex items-end justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Your Lists</h1>
-                    <p className="text-sm text-gray-500 mt-1">Manage and export your curated company collections.</p>
+                    <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Portfolios</h2>
+                    <p className="text-sm text-gray-500 mt-1 font-medium">Organize and manage your targets into thematic collections.</p>
                 </div>
                 <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm"
+                    className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
                 >
-                    Create New List
+                    New Collection
                 </button>
             </div>
 
             {lists.length === 0 ? (
-                <div className="bg-white border-2 border-dashed border-gray-200 rounded-lg py-12 text-center">
-                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">No lists</h3>
-                    <p className="mt-1 text-sm text-gray-500">Get started by creating a new list for your startups.</p>
+                <div className="bg-white border border-gray-100 rounded-2xl py-24 text-center shadow-sm">
+                    <div className="w-16 h-16 bg-gray-50 rounded-2xl mx-auto flex items-center justify-center mb-6">
+                        <svg className="h-8 w-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Start your first portfolio</h3>
+                    <p className="mt-2 text-sm text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Create a custom list to begin tracking and organizing your discovery targets.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {lists.map(list => (
                         <div
                             key={list.id}
                             onClick={() => setSelectedListId(list.id === selectedListId ? null : list.id)}
-                            className={`bg-white shadow rounded-lg p-6 cursor-pointer border-2 transition-all ${selectedListId === list.id ? 'border-indigo-500 ring-4 ring-indigo-50 shadow-md' : 'border-transparent hover:border-gray-200 shadow-sm'
+                            className={`group bg-white rounded-2xl p-8 cursor-pointer border transition-all duration-300 ${selectedListId === list.id
+                                ? 'border-blue-200 ring-4 ring-blue-50/50 shadow-xl'
+                                : 'border-gray-100 hover:border-gray-200 shadow-sm'
                                 }`}
                         >
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="text-lg font-bold text-gray-900">{list.name}</h3>
-                                    <p className="text-sm text-gray-400">{list.companyIds.length} companies</p>
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="space-y-1">
+                                    <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">{list.name}</h3>
+                                    <div className="flex items-center text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                        <span className="tabular-nums">{list.companyIds.length}</span>
+                                        <span className="ml-1.5 opacity-60">TARGETS</span>
+                                    </div>
                                 </div>
                                 <button
                                     onClick={(e) => handleDeleteList(list.id, e)}
-                                    className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                                    className="p-2 text-gray-200 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -142,23 +149,17 @@ const Lists = () => {
                                 </button>
                             </div>
 
-                            <div className="flex space-x-2 pt-4 border-t border-gray-50 mt-4">
+                            <div className="flex gap-3 pt-6 border-t border-gray-50">
                                 <button
                                     onClick={(e) => { e.stopPropagation(); exportAsCSV(list); }}
-                                    className="flex-1 text-xs font-semibold py-2 px-3 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 flex items-center justify-center"
+                                    className="flex-1 text-[11px] font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
                                 >
-                                    <svg className="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
                                     CSV
                                 </button>
                                 <button
                                     onClick={(e) => { e.stopPropagation(); exportAsJSON(list); }}
-                                    className="flex-1 text-xs font-semibold py-2 px-3 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 flex items-center justify-center"
+                                    className="flex-1 text-[11px] font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
                                 >
-                                    <svg className="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                    </svg>
                                     JSON
                                 </button>
                             </div>
@@ -169,31 +170,34 @@ const Lists = () => {
 
             {/* Selected List Companies */}
             {selectedList && (
-                <div className="mt-8 bg-white shadow rounded-lg overflow-hidden border-t-4 border-indigo-500 animate-fade-in">
-                    <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-indigo-50/30">
-                        <h3 className="text-lg font-bold text-gray-900">Companies in "{selectedList.name}"</h3>
+                <div className="mt-12 bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-xl shadow-gray-200/50 animate-fade-in translate-y-0 opacity-100 transition-all">
+                    <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/50">
+                        <div className="flex items-center space-x-3">
+                            <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                            <h3 className="text-lg font-bold text-gray-900 tracking-tight">{selectedList.name} Contents</h3>
+                        </div>
                         <button
                             onClick={() => setSelectedListId(null)}
-                            className="text-sm text-gray-500 hover:text-gray-700"
+                            className="text-xs font-bold text-gray-400 hover:text-gray-900 uppercase tracking-widest"
                         >
-                            Close
+                            Collapse
                         </button>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-50">
+                            <thead className="bg-white">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Industry</th>
-                                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Location</th>
-                                    <th className="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Action</th>
+                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Name</th>
+                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Industry</th>
+                                    <th className="px-8 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Location</th>
+                                    <th className="px-8 py-4 text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white divide-y divide-gray-50">
                                 {selectedList.companyIds.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-10 text-center text-sm text-gray-500">
-                                            No companies added to this list yet.
+                                        <td colSpan={4} className="px-8 py-16 text-center text-sm text-gray-400 italic">
+                                            Portfolio is currently empty.
                                         </td>
                                     </tr>
                                 ) : (
@@ -201,14 +205,16 @@ const Lists = () => {
                                         const company = companies.find(c => c.id === id);
                                         if (!company) return null;
                                         return (
-                                            <tr key={id} className="hover:bg-gray-50">
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{company.name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.industry}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.location}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <tr key={id} className="hover:bg-blue-50/20 transition-colors group">
+                                                <td className="px-8 py-5 whitespace-nowrap">
+                                                    <span className="text-sm font-semibold text-gray-900">{company.name}</span>
+                                                </td>
+                                                <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">{company.industry}</td>
+                                                <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-500">{company.location}</td>
+                                                <td className="px-8 py-5 whitespace-nowrap text-right">
                                                     <button
                                                         onClick={() => removeCompanyFromList(selectedList.id, id)}
-                                                        className="text-red-400 hover:text-red-600 transition-colors"
+                                                        className="text-[11px] font-bold text-gray-300 hover:text-red-500 uppercase tracking-widest transition-colors"
                                                     >
                                                         Remove
                                                     </button>
@@ -226,39 +232,39 @@ const Lists = () => {
             {/* Create Modal */}
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 overflow-y-auto">
-                    <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                        <div className="fixed inset-0 transition-opacity" onClick={() => setIsCreateModalOpen(false)}>
-                            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-                        </div>
-                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>&#8203;
-                        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                    <div className="flex items-center justify-center min-h-screen px-4">
+                        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" onClick={() => setIsCreateModalOpen(false)}></div>
+                        <div className="bg-white rounded-2xl p-8 shadow-2xl transform transition-all max-w-md w-full z-10 border border-gray-100">
                             <form onSubmit={handleCreateList}>
-                                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">Create New List</h3>
+                                <div className="mb-6">
+                                    <h3 className="text-xl font-bold text-gray-900 tracking-tight">New Collection</h3>
+                                    <p className="text-sm text-gray-500 mt-1 font-medium">Group startups by industry, stage, or priority.</p>
+                                </div>
                                 <div>
-                                    <label htmlFor="list-name" className="block text-sm font-medium text-gray-700">Name</label>
+                                    <label htmlFor="list-name" className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Collection Name</label>
                                     <input
                                         type="text"
                                         id="list-name"
                                         autoFocus
-                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        placeholder="e.g. AI Startups 2025"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        placeholder="e.g. Fintech Series A targets"
                                         value={newListName}
                                         onChange={(e) => setNewListName(e.target.value)}
                                     />
                                 </div>
-                                <div className="mt-6 sm:flex sm:flex-row-reverse">
-                                    <button
-                                        type="submit"
-                                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
-                                    >
-                                        Create
-                                    </button>
+                                <div className="mt-8 flex items-center justify-end space-x-3">
                                     <button
                                         type="button"
                                         onClick={() => setIsCreateModalOpen(false)}
-                                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm"
+                                        className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors"
                                     >
                                         Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
+                                    >
+                                        Create Collection
                                     </button>
                                 </div>
                             </form>

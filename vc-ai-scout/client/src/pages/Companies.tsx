@@ -89,155 +89,160 @@ const Companies = () => {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-900">Companies</h2>
+        <div className="space-y-8 pb-10">
+            <div className="flex justify-between items-end">
+                <div>
+                    <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Discovery</h2>
+                    <p className="text-sm text-gray-500 mt-1 font-medium">Find and filter the next generation of industry leaders.</p>
+                </div>
                 <div className="flex items-center space-x-3">
                     <button
                         onClick={() => setIsSaveSearchModalOpen(true)}
-                        className="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
+                        className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50/50 rounded-xl hover:bg-blue-100 transition-all active:scale-95"
                     >
-                        Save Current View
+                        Save View
                     </button>
-                    <span className="text-sm text-gray-500">{filteredCompanies.length} result(s)</span>
+                    <div className="h-4 w-px bg-gray-200"></div>
+                    <span className="text-sm font-bold text-gray-400 tabular-nums">{filteredCompanies.length} startups</span>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
                 <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Search</label>
-                    <input
-                        type="text"
-                        placeholder="Company name..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
-                        value={searchTerm}
-                        onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-                    />
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Search Startups</label>
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Type to search..."
+                            className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                            value={searchTerm}
+                            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+                        />
+                        <svg className="absolute left-3.5 top-3 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
                 </div>
                 <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Industry</label>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Industry</label>
                     <select
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-3 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none appearance-none"
                         value={industryFilter}
                         onChange={(e) => { setIndustryFilter(e.target.value); setCurrentPage(1); }}
                     >
-                        <option value="">All Industries</option>
+                        <option value="">All Categories</option>
                         {industries.map(ind => <option key={ind} value={ind}>{ind}</option>)}
                     </select>
                 </div>
                 <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase mb-1">Stage</label>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Funding Stage</label>
                     <select
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-3 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none appearance-none"
                         value={stageFilter}
                         onChange={(e) => { setStageFilter(e.target.value); setCurrentPage(1); }}
                     >
-                        <option value="">All Stages</option>
+                        <option value="">Any Stage</option>
                         {stages.map(stg => <option key={stg} value={stg}>{stg}</option>)}
                     </select>
                 </div>
             </div>
 
-            <div className="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50 text-gray-500 uppercase text-xs font-semibold">
-                        <tr>
-                            {['name', 'industry', 'stage', 'location', 'foundedYear'].map((key) => (
-                                <th
-                                    key={key}
-                                    className="px-6 py-3 text-left cursor-pointer hover:bg-gray-100 transition-colors"
-                                    onClick={() => requestSort(key as keyof Company)}
-                                >
-                                    <div className="flex items-center space-x-1">
-                                        <span>{key.replace(/([A-Z])/g, ' $1')}</span>
-                                        {sortConfig?.key === key && (
-                                            <span>{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
-                                        )}
-                                    </div>
-                                </th>
-                            ))}
-                            <th className="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {paginatedCompanies.map((company) => (
-                            <tr
-                                key={company.id}
-                                onClick={() => handleRowClick(company.id)}
-                                className="hover:bg-gray-50 cursor-pointer transition-colors"
-                            >
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{company.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.industry}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${company.stage.startsWith('Series') ? 'bg-indigo-100 text-indigo-800' : 'bg-gray-100 text-gray-800'
-                                        }`}>
-                                        {company.stage}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.location}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.foundedYear}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedCompanyId(company.id);
-                                        }}
-                                        className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md transition-colors"
+            <div className="bg-white shadow-sm rounded-2xl overflow-hidden border border-gray-100">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-50">
+                        <thead className="bg-gray-50/50">
+                            <tr>
+                                {['name', 'industry', 'stage', 'location', 'foundedYear'].map((key) => (
+                                    <th
+                                        key={key}
+                                        className="px-6 py-4 text-left cursor-pointer hover:bg-gray-100/50 transition-colors"
+                                        onClick={() => requestSort(key as keyof Company)}
                                     >
-                                        Add to List
-                                    </button>
-                                </td>
+                                        <div className="flex items-center space-x-1">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                                {key === 'foundedYear' ? 'FOUNDED' : key.toUpperCase()}
+                                            </span>
+                                            {sortConfig?.key === key && (
+                                                <span className="text-blue-500 text-xs">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
+                                            )}
+                                        </div>
+                                    </th>
+                                ))}
+                                <th className="px-6 py-4 text-right">
+                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Action</span>
+                                </th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-50">
+                            {paginatedCompanies.length === 0 ? (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-20 text-center text-gray-400 italic">No startups match your criteria.</td>
+                                </tr>
+                            ) : (
+                                paginatedCompanies.map((company) => (
+                                    <tr
+                                        key={company.id}
+                                        onClick={() => handleRowClick(company.id)}
+                                        className="hover:bg-blue-50/30 cursor-pointer transition-all duration-150 group"
+                                    >
+                                        <td className="px-6 py-5 whitespace-nowrap">
+                                            <div className="flex items-center">
+                                                <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-white border border-transparent group-hover:border-gray-100 transition-colors">
+                                                    <span className="text-xs font-bold text-gray-400 group-hover:text-blue-600">{company.name[0]}</span>
+                                                </div>
+                                                <span className="text-sm font-semibold text-gray-900">{company.name}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600">{company.industry}</td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600">
+                                            <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${company.stage.startsWith('Series') ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-600'
+                                                }`}>
+                                                {company.stage}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600 font-medium">{company.location}</td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-400 tabular-nums">{company.foundedYear}</td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-right">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedCompanyId(company.id);
+                                                }}
+                                                className="text-xs font-bold text-gray-400 hover:text-blue-600 bg-gray-50 group-hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-all active:scale-95"
+                                            >
+                                                Add to List
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
 
-                {filteredCompanies.length === 0 && (
-                    <div className="py-20 text-center text-gray-500">No companies found.</div>
-                )}
-
-                <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                    <div className="flex-1 flex justify-between sm:hidden">
-                        <button
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-                        >
-                            Previous
-                        </button>
-                        <button
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                            className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-                        >
-                            Next
-                        </button>
-                    </div>
-                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                            <p className="text-sm text-gray-700">
-                                Showing <span className="font-medium">{(currentPage - 1) * ITEMS_PER_PAGE + 1}</span> to <span className="font-medium">{Math.min(currentPage * ITEMS_PER_PAGE, filteredCompanies.length)}</span> of <span className="font-medium">{filteredCompanies.length}</span> results
-                            </p>
-                        </div>
-                        <div>
-                            <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {filteredCompanies.length > 0 && (
+                    <div className="bg-gray-50/30 px-6 py-4 flex items-center justify-between border-t border-gray-50">
+                        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                            <div>
+                                <p className="text-xs text-gray-500 font-medium">
+                                    Displaying <span className="text-gray-900 font-bold tabular-nums">{(currentPage - 1) * ITEMS_PER_PAGE + 1}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredCompanies.length)}</span> of <span className="text-gray-900 font-bold tabular-nums">{filteredCompanies.length}</span> results
+                                </p>
+                            </div>
+                            <nav className="flex items-center space-x-1" aria-label="Pagination">
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                                     disabled={currentPage === 1}
-                                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                    className="p-2 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-30 transition-all active:scale-95"
                                 >
-                                    <span className="sr-only">Previous</span>
                                     ←
                                 </button>
                                 {[...Array(totalPages)].map((_, i) => (
                                     <button
                                         key={i}
                                         onClick={() => setCurrentPage(i + 1)}
-                                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === i + 1
-                                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                        className={`w-9 h-9 rounded-lg text-xs font-bold transition-all active:scale-95 ${currentPage === i + 1
+                                            ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
+                                            : 'bg-white border border-gray-200 text-gray-500 hover:bg-gray-50'
                                             }`}
                                     >
                                         {i + 1}
@@ -246,15 +251,14 @@ const Companies = () => {
                                 <button
                                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                                     disabled={currentPage === totalPages}
-                                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                                    className="p-2 rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 disabled:opacity-30 transition-all active:scale-95"
                                 >
-                                    <span className="sr-only">Next</span>
                                     →
                                 </button>
                             </nav>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
 
             <SaveToListModal
@@ -267,38 +271,47 @@ const Companies = () => {
             {isSaveSearchModalOpen && (
                 <div className="fixed inset-0 z-50 overflow-y-auto">
                     <div className="flex items-center justify-center min-h-screen px-4">
-                        <div className="fixed inset-0 bg-gray-500 opacity-75" onClick={() => setIsSaveSearchModalOpen(false)}></div>
-                        <div className="bg-white rounded-lg p-6 shadow-xl transform transition-all max-w-md w-full z-10">
+                        <div className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity" onClick={() => setIsSaveSearchModalOpen(false)}></div>
+                        <div className="bg-white rounded-2xl p-8 shadow-2xl transform transition-all max-w-md w-full z-10 border border-gray-100">
                             <form onSubmit={handleSaveSearch}>
-                                <h3 className="text-lg font-bold text-gray-900 mb-4">Save Current Search</h3>
-                                <p className="text-sm text-gray-500 mb-4">
-                                    Filters: {searchTerm || 'None'}, {industryFilter || 'All Industries'}, {stageFilter || 'All Stages'}
-                                </p>
+                                <div className="mb-6">
+                                    <h3 className="text-xl font-bold text-gray-900 tracking-tight">Save View</h3>
+                                    <p className="text-sm text-gray-500 mt-1 font-medium">Keep these filters for quick access later.</p>
+                                </div>
+                                <div className="bg-blue-50/50 p-4 rounded-xl mb-6 border border-blue-50">
+                                    <p className="text-[10px] font-bold text-blue-400 uppercase tracking-widest mb-2">Active Filters</p>
+                                    <div className="flex flex-wrap gap-2 text-xs font-semibold text-blue-700">
+                                        {searchTerm && <span className="bg-white px-2 py-0.5 rounded border border-blue-100">"{searchTerm}"</span>}
+                                        {industryFilter && <span className="bg-white px-2 py-0.5 rounded border border-blue-100">{industryFilter}</span>}
+                                        {stageFilter && <span className="bg-white px-2 py-0.5 rounded border border-blue-100">{stageFilter}</span>}
+                                        {!searchTerm && !industryFilter && !stageFilter && <span className="text-blue-400 italic font-normal">No active filters</span>}
+                                    </div>
+                                </div>
                                 <div>
-                                    <label htmlFor="search-name" className="block text-sm font-medium text-gray-700">Search Name</label>
+                                    <label htmlFor="search-name" className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">View Name</label>
                                     <input
                                         type="text"
                                         id="search-name"
                                         autoFocus
-                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        placeholder="e.g. AI Fintech Seeds"
+                                        className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                        placeholder="e.g. AI Startups Q1"
                                         value={searchName}
                                         onChange={(e) => setSearchName(e.target.value)}
                                     />
                                 </div>
-                                <div className="mt-6 flex justify-end space-x-3">
+                                <div className="mt-8 flex items-center justify-end space-x-3">
                                     <button
                                         type="button"
                                         onClick={() => setIsSaveSearchModalOpen(false)}
-                                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                                        className="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 shadow-sm"
+                                        className="px-6 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95"
                                     >
-                                        Save
+                                        Save Current View
                                     </button>
                                 </div>
                             </form>
