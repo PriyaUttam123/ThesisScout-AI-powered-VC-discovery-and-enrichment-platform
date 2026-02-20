@@ -1,0 +1,8 @@
+{
+    "name": "vc-ai-scout",
+    "version": "1.0.0",
+    "scripts": {
+        "client": "npm run dev --prefix client",
+        "server": "npm run dev --prefix server"
+    }
+}
