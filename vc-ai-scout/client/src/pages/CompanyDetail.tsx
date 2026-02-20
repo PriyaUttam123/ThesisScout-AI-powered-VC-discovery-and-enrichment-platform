@@ -1,4 +1,3 @@
-```
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { companies } from '../data/companies';
@@ -10,14 +9,14 @@ const CompanyDetail = () => {
     const company = companies.find((c) => c.id === id);
 
     const [notes, setNotes] = useState(() => {
-        return localStorage.getItem(`company_notes_${ id } `) || '';
+        return localStorage.getItem(`company_notes_${id}`) || '';
     });
 
     const [isSaving, setIsSaving] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        localStorage.setItem(`company_notes_${ id } `, notes);
+        localStorage.setItem(`company_notes_${id}`, notes);
     }, [id, notes]);
 
     if (!company) {
@@ -78,7 +77,7 @@ const CompanyDetail = () => {
                     <button
                         onClick={handleEnrich}
                         disabled={isSaving}
-                        className={`px - 4 py - 2 bg - indigo - 600 text - white rounded - md text - sm font - medium hover: bg - indigo - 700 transition - colors flex items - center ${ isSaving ? 'opacity-75 cursor-not-allowed' : '' } `}
+                        className={`px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
                     >
                         {isSaving ? (
                             <>
@@ -156,6 +155,12 @@ const CompanyDetail = () => {
                     </div>
                 </div>
             </div>
+
+            <SaveToListModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                companyId={id || ''}
+            />
         </div>
     );
 };
