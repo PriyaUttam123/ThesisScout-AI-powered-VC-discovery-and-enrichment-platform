@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { companies, Company } from '../data/companies';
+import SaveToListModal from '../components/SaveToListModal';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -11,6 +12,7 @@ const Companies = () => {
     const [stageFilter, setStageFilter] = useState('');
     const [sortConfig, setSortConfig] = useState<{ key: keyof Company; direction: 'asc' | 'desc' } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
 
     const industries = useMemo(() => Array.from(new Set(companies.map(c => c.industry))).sort(), []);
     const stages = useMemo(() => Array.from(new Set(companies.map(c => c.stage))).sort(), []);
@@ -111,6 +113,9 @@ const Companies = () => {
                                     </div>
                                 </th>
                             ))}
+                            <th className="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -130,6 +135,17 @@ const Companies = () => {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.location}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.foundedYear}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedCompanyId(company.id);
+                                        }}
+                                        className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md transition-colors"
+                                    >
+                                        Add to List
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -177,8 +193,8 @@ const Companies = () => {
                                         key={i}
                                         onClick={() => setCurrentPage(i + 1)}
                                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === i + 1
-                                                ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                                : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                                            ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
+                                            : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                                             }`}
                                     >
                                         {i + 1}
@@ -197,6 +213,12 @@ const Companies = () => {
                     </div>
                 </div>
             </div>
+
+            <SaveToListModal
+                isOpen={!!selectedCompanyId}
+                onClose={() => setSelectedCompanyId(null)}
+                companyId={selectedCompanyId || ''}
+            />
         </div>
     );
 };
