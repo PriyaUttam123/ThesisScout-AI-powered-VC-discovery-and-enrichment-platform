@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { companies, Company } from '../data/companies';
 import SaveToListModal from '../components/SaveToListModal';
 
@@ -7,12 +7,47 @@ const ITEMS_PER_PAGE = 5;
 
 const Companies = () => {
     const navigate = useNavigate();
-    const [searchTerm, setSearchTerm] = useState('');
-    const [industryFilter, setIndustryFilter] = useState('');
-    const [stageFilter, setStageFilter] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('q') || '');
+    const [industryFilter, setIndustryFilter] = useState(searchParams.get('industry') || '');
+    const [stageFilter, setStageFilter] = useState(searchParams.get('stage') || '');
     const [sortConfig, setSortConfig] = useState<{ key: keyof Company; direction: 'asc' | 'desc' } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
+
+    const [isSaveSearchModalOpen, setIsSaveSearchModalOpen] = useState(false);
+    const [searchName, setSearchName] = useState('');
+
+    useEffect(() => {
+        const params: any = {};
+        if (searchTerm) params.q = searchTerm;
+        if (industryFilter) params.industry = industryFilter;
+        if (stageFilter) params.stage = stageFilter;
+        setSearchParams(params, { replace: true });
+    }, [searchTerm, industryFilter, stageFilter]);
+
+    const handleSaveSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!searchName.trim()) return;
+
+        const savedSearches = JSON.parse(localStorage.getItem('vc_scout_saved_searches') || '[]');
+        const newSearch = {
+            id: Date.now().toString(),
+            name: searchName.trim(),
+            filters: {
+                searchTerm,
+                industryFilter,
+                stageFilter
+            },
+            timestamp: new Date().toISOString()
+        };
+
+        localStorage.setItem('vc_scout_saved_searches', JSON.stringify([...savedSearches, newSearch]));
+        setSearchName('');
+        setIsSaveSearchModalOpen(false);
+        alert('Search saved successfully!');
+    };
 
     const industries = useMemo(() => Array.from(new Set(companies.map(c => c.industry))).sort(), []);
     const stages = useMemo(() => Array.from(new Set(companies.map(c => c.stage))).sort(), []);
@@ -57,7 +92,15 @@ const Companies = () => {
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold text-gray-900">Companies</h2>
-                <span className="text-sm text-gray-500">{filteredCompanies.length} result(s)</span>
+                <div className="flex items-center space-x-3">
+                    <button
+                        onClick={() => setIsSaveSearchModalOpen(true)}
+                        className="px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors"
+                    >
+                        Save Current View
+                    </button>
+                    <span className="text-sm text-gray-500">{filteredCompanies.length} result(s)</span>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
@@ -219,6 +262,50 @@ const Companies = () => {
                 onClose={() => setSelectedCompanyId(null)}
                 companyId={selectedCompanyId || ''}
             />
+
+            {/* Save Search Modal */}
+            {isSaveSearchModalOpen && (
+                <div className="fixed inset-0 z-50 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-screen px-4">
+                        <div className="fixed inset-0 bg-gray-500 opacity-75" onClick={() => setIsSaveSearchModalOpen(false)}></div>
+                        <div className="bg-white rounded-lg p-6 shadow-xl transform transition-all max-w-md w-full z-10">
+                            <form onSubmit={handleSaveSearch}>
+                                <h3 className="text-lg font-bold text-gray-900 mb-4">Save Current Search</h3>
+                                <p className="text-sm text-gray-500 mb-4">
+                                    Filters: {searchTerm || 'None'}, {industryFilter || 'All Industries'}, {stageFilter || 'All Stages'}
+                                </p>
+                                <div>
+                                    <label htmlFor="search-name" className="block text-sm font-medium text-gray-700">Search Name</label>
+                                    <input
+                                        type="text"
+                                        id="search-name"
+                                        autoFocus
+                                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        placeholder="e.g. AI Fintech Seeds"
+                                        value={searchName}
+                                        onChange={(e) => setSearchName(e.target.value)}
+                                    />
+                                </div>
+                                <div className="mt-6 flex justify-end space-x-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsSaveSearchModalOpen(false)}
+                                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 shadow-sm"
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
