@@ -1,6 +1,8 @@
+```
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { companies } from '../data/companies';
+import SaveToListModal from '../components/SaveToListModal';
 
 const CompanyDetail = () => {
     const { id } = useParams<{ id: string }>();
@@ -8,13 +10,14 @@ const CompanyDetail = () => {
     const company = companies.find((c) => c.id === id);
 
     const [notes, setNotes] = useState(() => {
-        return localStorage.getItem(`company_notes_${id}`) || '';
+        return localStorage.getItem(`company_notes_${ id } `) || '';
     });
 
     const [isSaving, setIsSaving] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        localStorage.setItem(`company_notes_${id}`, notes);
+        localStorage.setItem(`company_notes_${ id } `, notes);
     }, [id, notes]);
 
     if (!company) {
@@ -66,13 +69,16 @@ const CompanyDetail = () => {
                     </div>
                 </div>
                 <div className="flex items-center space-x-3">
-                    <button className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                    >
                         Save to List
                     </button>
                     <button
                         onClick={handleEnrich}
                         disabled={isSaving}
-                        className={`px-4 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center ${isSaving ? 'opacity-75 cursor-not-allowed' : ''}`}
+                        className={`px - 4 py - 2 bg - indigo - 600 text - white rounded - md text - sm font - medium hover: bg - indigo - 700 transition - colors flex items - center ${ isSaving ? 'opacity-75 cursor-not-allowed' : '' } `}
                     >
                         {isSaving ? (
                             <>
