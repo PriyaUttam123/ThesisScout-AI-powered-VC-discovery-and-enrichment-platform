@@ -4,13 +4,20 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
+// Routes
+import healthRouter from './routes/health.js';
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routes
+app.use('/api/health', healthRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: 'VC AI Scout API is running...' });

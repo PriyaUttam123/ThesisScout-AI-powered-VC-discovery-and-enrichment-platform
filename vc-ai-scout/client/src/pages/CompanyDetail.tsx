@@ -210,26 +210,75 @@ const CompanyDetail = () => {
                                 </div>
                             ) : isEnriched ? (
                                 <div className="space-y-10 animate-fade-in">
+                                    <div className="space-y-6">
+                                        <h5 className="text-xs font-black text-gray-400 uppercase tracking-widest">Executive Summary</h5>
+                                        <p className="text-xl font-bold text-gray-900 leading-relaxed">
+                                            AI-powered {company.industry.toLowerCase()} platform specializing in high-speed market intelligence and automated deal sourcing.
+                                        </p>
+                                    </div>
+
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="p-8 bg-blue-50/30 rounded-[2rem] border border-blue-50">
-                                            <h5 className="text-sm font-black text-blue-500 uppercase tracking-widest mb-4">Market Velocity</h5>
-                                            <p className="text-3xl font-black text-gray-900 tracking-tighter">High Tier 1</p>
-                                            <p className="text-sm text-blue-600 font-bold mt-2 uppercase">Aggressive growth noted</p>
+                                        <div className="space-y-4">
+                                            <h5 className="text-xs font-black text-blue-500 uppercase tracking-widest">Core Capabilities</h5>
+                                            <ul className="space-y-3">
+                                                {['Neural network optimization', 'Real-time data synchronization', 'Predictive market modeling'].map((item) => (
+                                                    <li key={item} className="flex items-center text-sm font-bold text-gray-600">
+                                                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-3"></span>
+                                                        {item}
+                                                    </li>
+                                                ))}
+                                            </ul>
                                         </div>
-                                        <div className="p-8 bg-purple-50/30 rounded-[2rem] border border-purple-50">
-                                            <h5 className="text-sm font-black text-purple-500 uppercase tracking-widest mb-4">Competitor Edge</h5>
-                                            <p className="text-3xl font-black text-gray-900 tracking-tighter">Proprietary LLM</p>
-                                            <p className="text-sm text-purple-600 font-bold mt-2 uppercase">Strong IP defensibility</p>
+                                        <div className="space-y-4">
+                                            <h5 className="text-xs font-black text-purple-500 uppercase tracking-widest">Market Signals</h5>
+                                            <div className="space-y-3">
+                                                <div className="flex items-center space-x-3 bg-purple-50/50 p-3 rounded-xl border border-purple-100">
+                                                    <svg className="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                    </svg>
+                                                    <span className="text-sm font-bold text-purple-700">Explosive Hiring (Eng)</span>
+                                                </div>
+                                                <div className="flex items-center space-x-3 bg-blue-50/50 p-3 rounded-xl border border-blue-100">
+                                                    <svg className="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    <span className="text-sm font-bold text-blue-700">Recent Tech Blog Update</span>
+                                                </div>
+                                                <div className="flex items-center space-x-3 bg-green-50/50 p-3 rounded-xl border border-green-100">
+                                                    <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                                    </svg>
+                                                    <span className="text-sm font-bold text-green-700">Stable Product Refresh</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="p-10 bg-gray-50/50 rounded-[2.5rem] border border-gray-100">
-                                        <h5 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6">Strategic Recommendation</h5>
-                                        <div className="flex items-start space-x-4">
-                                            <div className="w-1.5 h-12 bg-blue-600 rounded-full shrink-0"></div>
-                                            <p className="text-gray-700 text-lg font-bold leading-relaxed">
-                                                Based on Recent scraping of Crunchbase and LinkedIn, {company.name} has increased head-count by 40% in the last 6 months. High probability of upcoming funding round based on recent executive hires.
-                                            </p>
+
+                                    <div className="p-8 bg-gray-50/80 rounded-[2rem] border border-gray-100">
+                                        <h5 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Thesis Match Breakdown</h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            <div className="space-y-4">
+                                                <div className="flex items-center text-sm font-bold text-green-600">
+                                                    <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 font-black text-[10px]">✔</span>
+                                                    Industry Match: {company.industry}
+                                                </div>
+                                                <div className="flex items-center text-sm font-bold text-green-600">
+                                                    <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mr-3 font-black text-[10px]">✔</span>
+                                                    Stage Alignment: {company.stage}
+                                                </div>
+                                            </div>
+                                            <div className="space-y-4">
+                                                <div className="flex items-center text-sm font-bold text-red-500">
+                                                    <span className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center mr-3 font-black text-[10px]">✖</span>
+                                                    Location: Needs EU focus
+                                                </div>
+                                            </div>
                                         </div>
+                                    </div>
+
+                                    <div className="pt-8 flex items-center justify-between text-[10px] font-bold text-gray-300 uppercase tracking-[0.2em] border-t border-gray-50">
+                                        <span>Identity ID: TS-{company.id.padStart(4, '0')}</span>
+                                        <span>Source: {company.website.replace(/^https?:\/\//, '')} | 20 Feb 2026</span>
                                     </div>
                                 </div>
                             ) : (

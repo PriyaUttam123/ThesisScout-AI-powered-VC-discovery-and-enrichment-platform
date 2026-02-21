@@ -59,23 +59,29 @@ const SavedSearches = () => {
                     <p className="mt-2 text-base text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Filter startups on the Discovery page and click "Save View" to populate this gallery.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {savedSearches.map(search => (
                         <div
                             key={search.id}
                             onClick={() => handleRun(search)}
-                            className="group bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-xl hover:shadow-blue-50/50 transition-all duration-300 cursor-pointer flex flex-col h-full"
+                            className="group bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:border-blue-200 hover:shadow-xl hover:shadow-blue-50/50 transition-all duration-300 cursor-pointer flex flex-col h-full active:scale-[0.98]"
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <div className="space-y-1">
-                                    <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{search.name}</h3>
-                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest leading-none">
-                                        Created {new Date(search.timestamp).toLocaleDateString()}
+                                    <h3 className="text-2xl font-black text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                                        {[
+                                            search.filters.searchTerm && `"${search.filters.searchTerm}"`,
+                                            search.filters.industryFilter,
+                                            search.filters.stageFilter
+                                        ].filter(Boolean).join(' + ') || 'Generic View'}
+                                    </h3>
+                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">
+                                        Created: {new Date(search.timestamp).toDateString() === new Date().toDateString() ? 'Today' : new Date(search.timestamp).toLocaleDateString()}
                                     </p>
                                 </div>
                                 <button
                                     onClick={(e) => handleDelete(search.id, e)}
-                                    className="p-2 text-gray-200 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
+                                    className="p-2 text-gray-200 hover:text-red-500 transition-colors hover:bg-red-50 rounded-xl"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -83,28 +89,14 @@ const SavedSearches = () => {
                                 </button>
                             </div>
 
-                            <div className="space-y-3 mb-8 flex-1">
-                                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 opacity-60">Visual Parameters</p>
-                                <div className="flex flex-wrap gap-2 text-sm font-bold">
-                                    {search.filters.searchTerm ? (
-                                        <span className="bg-gray-50 text-gray-600 px-2.5 py-1 rounded-lg border border-gray-100">"{search.filters.searchTerm}"</span>
-                                    ) : (
-                                        <span className="bg-gray-50 text-gray-300 px-2.5 py-1 rounded-lg border border-gray-100 italic">No Keyword</span>
-                                    )}
-                                    {search.filters.industryFilter && (
-                                        <span className="bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg border border-blue-100">{search.filters.industryFilter}</span>
-                                    )}
-                                    {search.filters.stageFilter && (
-                                        <span className="bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-lg border border-indigo-100">{search.filters.stageFilter}</span>
-                                    )}
+                            <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between">
+                                <div className="flex items-center text-blue-600 text-sm font-black uppercase tracking-widest">
+                                    Run
+                                    <svg className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                    </svg>
                                 </div>
-                            </div>
-
-                            <div className="mt-auto group-hover:translate-x-1 transition-transform inline-flex items-center text-blue-600 text-base font-bold tracking-tight">
-                                Launch Discovery View
-                                <svg className="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
+                                <div className="text-[10px] font-black text-gray-300 uppercase tracking-widest italic">{search.name}</div>
                             </div>
                         </div>
                     ))}

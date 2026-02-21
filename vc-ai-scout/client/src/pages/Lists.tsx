@@ -5,6 +5,7 @@ interface List {
     id: string;
     name: string;
     companyIds: string[];
+    lastUpdated: string;
 }
 
 const Lists = () => {
@@ -33,6 +34,7 @@ const Lists = () => {
             id: Date.now().toString(),
             name: newListName.trim(),
             companyIds: [],
+            lastUpdated: new Date().toISOString(),
         };
 
         saveLists([...lists, newList]);
@@ -52,7 +54,11 @@ const Lists = () => {
     const removeCompanyFromList = (listId: string, companyId: string) => {
         const updatedLists = lists.map(l => {
             if (l.id === listId) {
-                return { ...l, companyIds: l.companyIds.filter(id => id !== companyId) };
+                return {
+                    ...l,
+                    companyIds: l.companyIds.filter(id => id !== companyId),
+                    lastUpdated: new Date().toISOString()
+                };
             }
             return l;
         });
@@ -118,30 +124,34 @@ const Lists = () => {
                         </svg>
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">Start your first portfolio</h3>
-                    <p className="mt-2 text-sm text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Create a custom list to begin tracking and organizing your discovery targets.</p>
+                    <p className="mt-2 text-base text-gray-500 max-w-xs mx-auto font-medium leading-relaxed">Create a custom list to begin tracking and organizing your discovery targets.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {lists.map(list => (
                         <div
                             key={list.id}
-                            onClick={() => setSelectedListId(list.id === selectedListId ? null : list.id)}
-                            className={`group bg-white rounded-2xl p-8 cursor-pointer border transition-all duration-300 ${selectedListId === list.id
-                                ? 'border-blue-200 ring-4 ring-blue-50/50 shadow-xl'
-                                : 'border-gray-100 hover:border-gray-200 shadow-sm'
+                            className={`group bg-white rounded-3xl p-8 border transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 ${selectedListId === list.id
+                                ? 'border-blue-500 ring-4 ring-blue-50/50 shadow-xl'
+                                : 'border-gray-100 hover:border-blue-100'
                                 }`}
                         >
                             <div className="flex justify-between items-start mb-6">
-                                <div className="space-y-1">
-                                    <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">{list.name}</h3>
-                                    <div className="flex items-center text-sm font-bold text-gray-400 uppercase tracking-widest leading-none">
-                                        <span className="tabular-nums">{list.companyIds.length}</span>
-                                        <span className="ml-1.5 opacity-60">TARGETS</span>
+                                <div className="space-y-2">
+                                    <h3 className="text-2xl font-black text-gray-900 group-hover:text-blue-600 transition-colors uppercase tracking-tight">{list.name}</h3>
+                                    <div className="flex flex-col space-y-1">
+                                        <div className="flex items-center text-sm font-bold text-blue-600 uppercase tracking-widest">
+                                            <span className="tabular-nums">{list.companyIds.length}</span>
+                                            <span className="ml-1.5">Companies</span>
+                                        </div>
+                                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em]">
+                                            Updated {new Date(list.lastUpdated).toLocaleDateString()}
+                                        </div>
                                     </div>
                                 </div>
                                 <button
                                     onClick={(e) => handleDeleteList(list.id, e)}
-                                    className="p-2 text-gray-200 hover:text-red-500 transition-colors hover:bg-red-50 rounded-lg"
+                                    className="p-2 text-gray-300 hover:text-red-500 transition-colors hover:bg-red-50 rounded-xl"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -151,16 +161,19 @@ const Lists = () => {
 
                             <div className="flex gap-3 pt-6 border-t border-gray-50">
                                 <button
-                                    onClick={(e) => { e.stopPropagation(); exportAsCSV(list); }}
-                                    className="flex-1 text-xs font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
+                                    onClick={() => setSelectedListId(list.id === selectedListId ? null : list.id)}
+                                    className={`flex-1 text-xs font-black py-3 rounded-2xl transition-all uppercase tracking-widest active:scale-95 ${selectedListId === list.id
+                                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                                            : 'bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600'
+                                        }`}
                                 >
-                                    CSV
+                                    {selectedListId === list.id ? 'Close' : 'Open'}
                                 </button>
                                 <button
-                                    onClick={(e) => { e.stopPropagation(); exportAsJSON(list); }}
-                                    className="flex-1 text-xs font-bold py-2 bg-gray-50 text-gray-500 hover:bg-blue-50 hover:text-blue-600 border border-transparent hover:border-blue-100 rounded-lg flex items-center justify-center transition-all uppercase tracking-widest"
+                                    onClick={(e) => { e.stopPropagation(); exportAsCSV(list); }}
+                                    className="flex-1 text-xs font-black py-3 bg-white text-gray-400 hover:text-blue-600 border border-gray-100 hover:border-blue-100 rounded-2xl flex items-center justify-center transition-all uppercase tracking-widest active:scale-95"
                                 >
-                                    JSON
+                                    Export
                                 </button>
                             </div>
                         </div>

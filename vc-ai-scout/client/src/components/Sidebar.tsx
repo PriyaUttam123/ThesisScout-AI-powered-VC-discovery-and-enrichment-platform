@@ -49,12 +49,14 @@ const Sidebar = () => {
                         <Link
                             key={item.name}
                             to={item.href}
-                            className={`flex items-center px-4 py-2.5 text-base font-medium rounded-xl transition-all duration-200 ${isActive
-                                ? 'bg-blue-50 text-blue-600 shadow-sm'
-                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                            className={`flex items-center px-4 py-3 text-base font-bold rounded-2xl transition-all duration-300 group ${isActive
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                                : 'text-gray-500 hover:bg-white hover:text-blue-600 hover:shadow-sm border border-transparent hover:border-blue-50'
                                 }`}
                         >
-                            {item.icon}
+                            <span className={`mr-3 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-blue-500'}`}>
+                                {item.icon}
+                            </span>
                             {item.name}
                         </Link>
                     );
